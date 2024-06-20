@@ -120,9 +120,12 @@ export default function depcheck(rootDir, options, callback) {
   const metadata =
     options.package || readJSON(path.join(rootDir, 'package.json'));
   const dependencies = metadata.dependencies || {};
-  const devDependencies = metadata.devDependencies
-    ? metadata.devDependencies
-    : {};
+  // const devDependencies = metadata.devDependencies
+  //   ? metadata.devDependencies
+  //   : {};
+  // Ignore dev dependencies so that production dependencies incorrectly marked as dev dependencies
+  // will be detected as missing.
+  const devDependencies = {};
   const peerDeps = Object.keys(metadata.peerDependencies || {});
   const optionalDeps = Object.keys(metadata.optionalDependencies || {});
   const deps = filterDependencies(
